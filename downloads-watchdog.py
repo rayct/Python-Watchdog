@@ -4,11 +4,12 @@
 import os
 import time
 import sys
-
+import logging
 from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
+from watchdog.events import LoggingEventHandler
+# from watchdog.events import FileSystemEventHandler
 
-folder_to_monitor = sys.argv[1]
+folder_to_monitor = older_to_monitor = sys.argv[1]
 
 file_folder_mapping = {
     '.png': 'images',
@@ -24,7 +25,8 @@ file_folder_mapping = {
 }
 
 
-class DownloadedFileHandler(FileSystemEventHandler):
+# class DownloadedFileHandler(FileSystemEventHandler):
+class DownloadedFileHandler(LoggingEventHandler):
     def on_created(self, event):
         if any(event.src_path.endswith(x) for x in file_folder_mapping):
             parent = os.path.join(os.path.dirname(os.path.abspath(
